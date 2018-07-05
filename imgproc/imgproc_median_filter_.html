@@ -12,10 +12,11 @@ function start(ev)
     ctx.drawImage(img, 0, 0); // desenhando a imagem no contexto do canvas
     imageData1 = ctx.getImageData(0, 0, w, h); // imagem original a esquerda
 	imageData2 = ctx.getImageData(w/2, 0, w, h); // resultado a direita  
-	// Gaussian filter
-	GaussianMask = [ [ 1/16, 1/8, 1/16 ], 
-			         [ 1/8 , 1/4, 1/8  ], 
-			         [ 1/16, 1/8, 1/16 ] ];
+	// median filter
+	mask = [ [ 1/9, 1/9, 1/9 ], 
+			 [ 1/9, 1/9, 1/9 ], 
+			 [ 1/9, 1/9, 1/9 ] ];
+
     // Percorrendo todos os pixels da imagem (cada x,y)
     for (y = 1; y < h-1; y++) {
         for (x = 1; x < (w/2)-1; x++) {
@@ -35,15 +36,15 @@ function start(ev)
 		for	(k=0; k<3; k++)
 		{
 		sum = 0;
-		sum += imageData1.data[pos00+k] * GaussianMask[0][0];
-		sum += imageData1.data[pos01+k] * GaussianMask[0][1];
-		sum += imageData1.data[pos02+k] * GaussianMask[0][2];
-		sum += imageData1.data[pos10+k] * GaussianMask[1][0];
-		sum += imageData1.data[pos11+k] * GaussianMask[1][1];
-		sum += imageData1.data[pos12+k] * GaussianMask[1][2];
-		sum += imageData1.data[pos20+k] * GaussianMask[2][0];
-		sum += imageData1.data[pos21+k] * GaussianMask[2][1];
-		sum += imageData1.data[pos22+k] * GaussianMask[2][2];
+		sum += imageData1.data[pos00+k] * mask[0][0];
+		sum += imageData1.data[pos01+k] * mask[0][1];
+		sum += imageData1.data[pos02+k] * mask[0][2];
+		sum += imageData1.data[pos10+k] * mask[1][0];
+		sum += imageData1.data[pos11+k] * mask[1][1];
+		sum += imageData1.data[pos12+k] * mask[1][2];
+		sum += imageData1.data[pos20+k] * mask[2][0];
+		sum += imageData1.data[pos21+k] * mask[2][1];
+		sum += imageData1.data[pos22+k] * mask[2][2];
 		
 		imageData2.data[pos11+k] = sum;
 		}

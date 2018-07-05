@@ -12,10 +12,11 @@ function start(ev)
     ctx.drawImage(img, 0, 0); // desenhando a imagem no contexto do canvas
     imageData1 = ctx.getImageData(0, 0, w, h); // imagem original a esquerda
 	imageData2 = ctx.getImageData(w/2, 0, w, h); // resultado a direita  
-	// Gaussian filter
-	GaussianMask = [ [ 1/16, 1/8, 1/16 ], 
-			         [ 1/8 , 1/4, 1/8  ], 
-			         [ 1/16, 1/8, 1/16 ] ];
+
+	SobelMask = [ [ -1, 0, 1 ], 
+			       [ -2, 0, 2 ], 
+			       [ -1, 0, 1 ] ];
+
     // Percorrendo todos os pixels da imagem (cada x,y)
     for (y = 1; y < h-1; y++) {
         for (x = 1; x < (w/2)-1; x++) {
@@ -31,22 +32,23 @@ function start(ev)
 		pos20 = ((x-1) + ((y+1) * w)) * 4;
 		pos21 = ( x    + ((y+1) * w)) * 4; 
 		pos22 = ((x+1) + ((y+1) * w)) * 4; 
-		
-		for	(k=0; k<3; k++)
-		{
+				
 		sum = 0;
-		sum += imageData1.data[pos00+k] * GaussianMask[0][0];
-		sum += imageData1.data[pos01+k] * GaussianMask[0][1];
-		sum += imageData1.data[pos02+k] * GaussianMask[0][2];
-		sum += imageData1.data[pos10+k] * GaussianMask[1][0];
-		sum += imageData1.data[pos11+k] * GaussianMask[1][1];
-		sum += imageData1.data[pos12+k] * GaussianMask[1][2];
-		sum += imageData1.data[pos20+k] * GaussianMask[2][0];
-		sum += imageData1.data[pos21+k] * GaussianMask[2][1];
-		sum += imageData1.data[pos22+k] * GaussianMask[2][2];
+		sum += imageData1.data[pos00] * SobelMask[0][0];
+		sum += imageData1.data[pos01] * SobelMask[0][1];
+		sum += imageData1.data[pos02] * SobelMask[0][2];
+			sum += imageData1.data[pos10] * SobelMask[1][0];
+			sum += imageData1.data[pos11] * SobelMask[1][1];
+			sum += imageData1.data[pos12] * SobelMask[1][2];
+				sum += imageData1.data[pos20] * SobelMask[2][0];
+				sum += imageData1.data[pos21] * SobelMask[2][1];
+				sum += imageData1.data[pos22] * SobelMask[2][2];
+				
 		
-		imageData2.data[pos11+k] = sum;
-		}
+        imageData2.data[pos11] = sum; // imageData2 é a imagem direita
+		imageData2.data[pos11+1] = sum; // imageData2 é a imagem direita
+		imageData2.data[pos11+2] = sum; // imageData2 é a imagem direita
+    
 		
 		// canal alpha obrigatório, tem que ser opaco = 255
     	imageData2.data[pos11+3] = 255; //canal alpha, se  = 0 a imagem some			
