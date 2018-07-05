@@ -1,0 +1,134 @@
+<html>
+<head>
+  <script src="http://processingjs.org/js/processing.min.js"></script>
+</head>
+<body><h1>Processing.js</a></h1>
+<h2>Advanced processing.js via JavaScript</h2>
+<p>Processing.js Cube</p>
+<em>Note: runs via a web server or requres local files access in the web browser settings.</em>
+Converted to the JavaScript language from the Processing code<br>
+Original souce code:<a href="http://processing.org/learning/3d/texturecube.html">TexturedCube</a> 
+by Dave Bollinger.
+
+<canvas id="canvas1" width="640" height="360"></canvas>
+<script id="script1" type="text/javascript">
+
+// Attaching js code to the canvas by using a sketch object
+
+var sketch = new Processing.Sketch();
+
+sketch.use3DContext = true;
+sketch.attachFunction = function(gl) {
+
+  var rotX = 0;
+  var rotY = 0;
+  var rotZ = 0;
+  
+  var theta = 2*Math.PI;
+  var phi = Math.PI;
+  var radius = 80;
+  
+  var x, y, z;
+   
+  var cylinderPointX = [];
+  var cylinderPointY = [];
+  var cylinderPointZ = [];
+
+  gl.setup = function() {         // chamada ao iniciar o código (seria como o método main/start)
+    gl.size(640, 360, gl.OPENGL);
+
+  };
+
+  gl.draw = function() {     // é um loop infinito
+
+    gl.background(0, 0, 0);	
+	gl.lights();
+	gl.translate(gl.width/2.0, gl.height/2.0, -100);		
+	
+	gl.rotateX(rotX);
+	gl.rotateY(rotY);
+	gl.rotateZ(rotZ);
+
+	
+	// CENTER POINT (begin point)
+	cylinderPointX.push(Math.cos(0));
+	cylinderPointY.push(-60);
+	cylinderPointZ.push(Math.sin(0));
+	
+	// other points
+	for (var i = 0.0; i <= 2*Math.PI; i += 2*Math.PI/10)
+	{     	  
+		cylinderPointX.push(radius*Math.cos(i)); // x
+		cylinderPointY.push(-60);		  // y
+		cylinderPointZ.push(radius*Math.sin(i)); // z	
+	}
+	
+	
+	// Cylinder up
+	gl.beginShape(gl.TRIANGLE_STRIP);
+		for (var index = 1; index <= 11; index++)
+		{     	  
+			// CENTER POINT
+			gl.vertex(cylinderPointX[0], cylinderPointY[0], cylinderPointZ[0]); 
+				
+			//gl.vertex(x, y, z);    
+			gl.vertex(cylinderPointX[index], cylinderPointY[index], cylinderPointZ[index]); 
+		}		
+	gl.endShape();
+	
+	// Cylinder sides
+	gl.beginShape(gl.QUADS);
+		for (var index = 1; index <= 11; index++)
+		{   		
+			gl.vertex(cylinderPointX[index], -60, cylinderPointZ[index]); 
+			gl.vertex(cylinderPointX[index], 20, cylinderPointZ[index]); 
+			gl.vertex(cylinderPointX[index+1], 20, cylinderPointZ[index+1]); 
+			gl.vertex(cylinderPointX[index+1], -60, cylinderPointZ[index+1]);  	
+		}		
+	gl.endShape();
+	
+	// Cylinder bottom
+	gl.beginShape(gl.TRIANGLE_STRIP);
+		for (var index = 1; index <= 11; index++)
+		{     	  
+			// CENTER POINT bottom
+			gl.vertex(cylinderPointX[0], 20, cylinderPointZ[0]); 
+				
+			//gl.vertex(x, y, z);   bottom 
+			gl.vertex(cylinderPointX[index], 20, cylinderPointZ[index]); 
+		}		
+	gl.endShape();
+	
+
+  }
+ 
+
+  function myCube(tex) { 	  }
+
+  gl.mouseDragged = function() {	  };
+  
+  gl.mousePressed = function() {	  };
+  
+  // Keyboard event
+	function keyPressed() {
+		if (gl.key == 65 || gl.key == 97) {	// letra A na Tabela ASCII
+			rotY+= 0.01*Math.PI;
+		}
+		if (gl.key == 68 || gl.key == 100) {	// letra D na Tabela ASCII
+			rotY-= 0.01*Math.PI
+		}
+		if (gl.key == 83 || gl.key == 115) {	// letra S na Tabela ASCII
+			rotX+= 0.01*Math.PI;
+		}
+		if (gl.key == 87 || gl.key == 119) {	// letra W na Tabela ASCII
+			rotX-= 0.01*Math.PI
+		}
+	}
+	gl.keyPressed = keyPressed;
+
+};
+
+var canvas = document.getElementById("canvas1");
+var p = new Processing(canvas, sketch);	// attaching the sketch to the canvas
+
+</script>
