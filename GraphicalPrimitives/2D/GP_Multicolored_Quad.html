@@ -1,0 +1,108 @@
+<html>
+<head>
+<script src="http://processingjs.org/js/processing.min.js"></script>
+<script src="../processing.min.js"></script>
+</head>
+<body>
+<h3>Advanced Processing.js via JavaScript and HTML5 for Computer Graphics Classes </h3>
+<h2>Multicolored 2D Quad by "Josivan Silva" Quad and Colors</h2>
+<em>NOTE: runs via a web server or requires local file (processing.min.js) access in the web browser settings.</em>
+<br><br>
+
+<center>
+<canvas id="canvas1" width="400" height="400"></canvas>
+<br>
+</center>
+
+<h4>
+Converted to the JavaScript language from the Processing code<br><br>
+
+</h4>
+
+<script id="script1" type="text/javascript">
+
+var sketch = new Processing.Sketch();
+// define 3D context
+sketch.use3DContext = true;
+
+// attach function (also, can be specified as the single parameter 
+// in the Processing.Sketch object constructor)
+sketch.attachFunction = function(gl) {
+
+  var rotCenaX =  1;
+  var rotCenaY = -1;
+  var rotCenaZ =  1;
+
+
+  gl.setup = function() {         // chamada ao iniciar o código (seria como o método main/start)
+    
+	gl.size(400, 400, gl.OPENGL);
+	
+	gl.beginCamera();
+		gl.camera(10.0, 35.0, 120.0,		 50.0, 50.0, 0.0,			 0.0, 1.0, 0.0);
+		gl.ortho(-gl.width/2, gl.width/2, -gl.height/2, gl.height/2, -500, 500); 
+	gl.endCamera();
+	
+	
+	
+	
+
+  };
+
+  gl.draw = function() {     // é um loop infinito
+	
+    
+	//gl.noFill();
+	 
+	gl.translate(gl.width/2, gl.height/2, 0);
+	gl.scale(40,40,40);
+	
+	//gl.box(1);
+	
+	gl.beginShape(gl.QUADS);		
+		
+		glColor3f(50.5, 100.3, 0.7);
+		gl.vertex(-1, -1,  0);
+		glColor3f(150.5, 0.3, 100.7);
+		gl.vertex( 1, -1,  0);
+		glColor3f(0.5, 100.3, 200.7);
+		gl.vertex( 1,  1,  0);
+		glColor3f(50.5, 50.3, 20.7);
+		gl.vertex(-1,  1,  0);
+		
+    gl.endShape();
+	
+
+  }
+  
+   function glColor3f(r,g,b){  
+	gl.fill(r, g, b);    
+  }
+
+  /*
+  function rotCena(gl) {
+	gl.scale(rotCenaX,rotCenaY,rotCenaZ);
+  }
+  
+ 
+  
+  function glTranslate3f(x, y, z){
+	gl.translate(x, y, z);
+  }
+
+  // mouse event
+  gl.mouseDragged = function() {
+    var rate = 0.001;
+    rotz += (5) * rate;
+  };
+  */
+};
+
+var canvas = document.getElementById("canvas1");
+// attaching the sketch to the canvas
+var p = new Processing(canvas, sketch);
+
+</script>
+</center>
+</body>
+</html>
