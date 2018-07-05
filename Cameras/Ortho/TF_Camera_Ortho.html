@@ -1,0 +1,79 @@
+<html>
+<head>
+  <script src="http://processingjs.org/js/processing.min.js"></script>
+</head>
+
+<body>
+<h1>processing.min.js</h1>
+<h2>WebGL com Framework processing.js (JavaScript) </h2>
+<h3>Primitivas OpenGL - Aula de CG</h3>
+
+<center>
+
+<p><canvas id="canvas1" width="640" height="480"></canvas></p>
+<script id="script1" type="text/javascript">
+
+var sketch = new Processing.Sketch();
+// define 3D context
+sketch.use3DContext = true;
+
+// attach function (also, can be specified as the single parameter 
+// in the Processing.Sketch object constructor)
+sketch.attachFunction = function(gl) {
+  var tex;
+
+  var rotz = Math.PI/4;
+
+
+  gl.setup = function() {         // chamada ao iniciar o código (seria como o método main/start)
+    gl.size(640, 480, gl.OPENGL);
+	
+	gl.beginCamera();
+		gl.camera();
+		gl.ortho(0, gl.width, 0, gl.height, -1000, 1000);
+	gl.endCamera();
+	
+
+  };
+
+  gl.draw = function() {     // é um loop infinito
+    gl.background(0);
+    gl.translate((gl.width/2)+320, (gl.height/2)-240, 100);
+    gl.rotateZ(rotz);
+    gl.scale(20,20,20);
+	gl.fill(200, 0 , 120);
+	
+	gl.beginShape(gl.TRIANGLES); 
+	
+		// +Z "front" face
+		glColor3f(50.5, 100.3, 0.7);
+		gl.vertex(-1, -1,  1);
+		gl.vertex( 1, -1,  1);
+		gl.vertex( 1,  1,  1);
+		gl.vertex(-1,  1,  1);
+		
+    gl.endShape();
+
+  }
+
+  function myDraw() {}
+  
+  function glColor3f(r,g,b){  
+	gl.fill(r, g, b);    
+  }
+
+  // mouse event
+  gl.mouseDragged = function() {
+    var rate = 0.001;
+    rotz += (5) * rate;
+  };
+};
+
+var canvas = document.getElementById("canvas1");
+// attaching the sketch to the canvas
+var p = new Processing(canvas, sketch);
+
+</script>
+</center>
+</body>
+</html>
