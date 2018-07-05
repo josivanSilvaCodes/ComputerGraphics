@@ -17,26 +17,26 @@ function start(ev)
     for (y = 0; y < h; y++) {
         for (x = 0; x < w/2; x++) {
 		
-		pos = (x + (y * w)) * 4; 
+	pos = (x + (y * w)) * 4; 
 		
         r = imageData1.data[pos]; // imageData1 é a imagem esquerda
         g = imageData1.data[pos+1];
         b = imageData1.data[pos+2];
 
-		gray =  (r + g +  b)/3; // convertendo para cinza cada pixel
-		bw = 0;
-		if(gray>=128){bw=255}
+	gray =  (r + g +  b)/3; // convertendo para cinza cada pixel
+	bw = 0;
+	if(gray>=128){bw=255}
 		
         imageData2.data[pos] = bw; // imageData2 é a imagem direita
         imageData2.data[pos+1] = bw;
-	    imageData2.data[pos+2] = bw;		
+	imageData2.data[pos+2] = bw;		
 		
-		// canal alpha obrigatório, tem que ser opaco = 255
+	// canal alpha obrigatório, tem que ser opaco = 255
     	imageData2.data[pos+3] = 255; //canal alpha, se  = 0 a imagem some			
         }
     } 
     ctx.putImageData(imageData1, 0, 0); // colocando a imagem esquerda na tela
-	ctx.putImageData(imageData2, w/2, 0); // imagem direita na tela
+    ctx.putImageData(imageData2, w/2, 0); // imagem direita na tela
 }
 
 img = new Image();
