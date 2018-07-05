@@ -1,0 +1,55 @@
+<html>
+<head>
+  <script src="http://processingjs.org/js/processing.min.js"></script>
+</head>
+<body><h1>Processing.js</a></h1>
+<h2>Advanced processing.js via JavaScript</h2>
+<p>Processing.js Cube</p>
+<em>Note: runs via a web server or requres local files access in the web browser settings.</em>
+Converted to the JavaScript language from the Processing code<br>
+Original souce code:<a href="http://processing.org/learning/3d/texturecube.html">TexturedCube</a> 
+by Dave Bollinger.
+
+<canvas id="canvas1" width="640" height="360"></canvas>
+<script id="script1" type="text/javascript">
+
+// Attaching js code to the canvas by using a sketch object
+
+var sketch = new Processing.Sketch();
+
+sketch.use3DContext = true;
+sketch.attachFunction = function(gl) {
+
+
+  gl.setup = function() {         // chamada ao iniciar o código (seria como o método main/start)
+    gl.size(640, 360, gl.OPENGL);
+
+  };
+
+  gl.draw = function() {     // é um loop infinito
+
+    gl.background(0, 0, 0);	
+	gl.lights();
+	gl.translate(gl.width/2.0, gl.height/2.0, -100);	
+	
+	
+	gl.beginShape(gl.POINTS);	// simplest circle in blue
+	for( i =0; i <= 900; i++)
+	{
+		var angle = 2 * 3.14159 * i / 900;
+		var x = 100 * Math.cos(angle);
+		var y = 100 * Math.sin(angle);
+		gl.stroke(0, 	0,   255);
+		gl.strokeWeight(2);
+		gl.vertex(x,y,0);
+	}
+	gl.endShape();
+	
+  }
+
+};
+
+var canvas = document.getElementById("canvas1");
+var p = new Processing(canvas, sketch);	// attaching the sketch to the canvas
+
+</script>
