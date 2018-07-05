@@ -1,0 +1,102 @@
+<html>
+<head>
+  <script src="http://processingjs.org/js/processing.min.js"></script>
+</head>
+<body><h1>Processing.js</a></h1>
+<h2>Advanced processing.js via JavaScript</h2>
+<p>Processing.js Cube</p>
+<em>Note: runs via a web server or requres local files access in the web browser settings.</em>
+Converted to the JavaScript language from the Processing code<br>
+Original souce code:<a href="http://processing.org/learning/3d/texturecube.html">TexturedCube</a> 
+by Dave Bollinger.
+
+<canvas id="canvas1" width="200" height="200"></canvas>
+
+<script id="script1" type="text/javascript">
+
+// Attaching js code to the canvas by using a sketch object
+
+var sketch = new Processing.Sketch();
+// define 3D context
+sketch.use3DContext = true;
+
+// attach function (also, can be specified as the single parameter 
+// in the Processing.Sketch object constructor)
+sketch.attachFunction = function(gl) {
+	var tex;
+	var rotx = Math.PI/4;
+	var roty = Math.PI/4;
+  
+	var deltaX = 0;
+	var deltaY = 0;
+	var deltaZ = 0;
+  
+	var fov = Math.PI/3.0;
+	var cameraZ = (gl.height/2.0) / Math.tan(fov/2.0);
+
+
+	gl.setup = function() {         // chamada ao iniciar o código (seria como o método main/start)
+		gl.size(640, 360, gl.OPENGL);
+		gl.perspective(fov, (gl.width)/(gl.height), cameraZ/2.0, cameraZ*30.0);	
+
+	};
+
+	gl.draw = function() {     // é um loop infinito
+		gl.background(0);
+		//gl.lights();
+		//gl.resetMatrix();		
+		gl.camera(gl.width/2+deltaX, gl.height/2+deltaY, -50+deltaZ, gl.width/2, gl.height/2, 0, 0, 1, 0);
+
+		
+		gl.pushMatrix();
+		gl.translate(gl.width/2, gl.height/2, -100);
+		gl.stroke(255);
+		gl.noFill();
+		gl.scale(1,1,10);
+		gl.box(200);
+		gl.popMatrix();
+		
+		gl.pushMatrix();
+		gl.translate((gl.width/2)+10, gl.height/2, -1450);
+		gl.box(20);
+		gl.popMatrix();
+  
+	}
+
+  
+  
+	function glColor3f(r,g,b){  
+		gl.fill(r, g, b);    
+	}
+
+	// mouse event
+	gl.mouseDragged = function() {
+		var rate = 0.01;
+		rotx += (gl.pmouseY-gl.mouseY) * rate;
+		roty += (gl.mouseX-gl.pmouseX) * rate;
+	};
+  
+	// Keyboard event
+	function keyPressed() {
+		if (gl.key == 65 || gl.key == 97) {
+			deltaX-=10;
+		}
+		if (gl.key == 68 || gl.key == 100) {
+			deltaX+=10;
+		}
+		if (gl.key == 87 || gl.key == 119) {
+			deltaZ+=10;
+		}
+		if (gl.key == 83 || gl.key == 115) {
+			deltaZ-=10;
+		}
+	}
+	gl.keyPressed = keyPressed;
+    
+};
+
+var canvas = document.getElementById("canvas1");
+// attaching the sketch to the canvas
+var p = new Processing(canvas, sketch);
+
+</script>
