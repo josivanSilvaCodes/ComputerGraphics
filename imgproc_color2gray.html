@@ -11,30 +11,30 @@ function start(ev)
     h = canvas.height; // altura do canvas
     ctx.drawImage(img, 0, 0); // desenhando a imagem no contexto do canvas
     imageData1 = ctx.getImageData(0, 0, w, h); // imagem original a esquerda
-	imageData2 = ctx.getImageData(w/2, 0, w, h); // resultado a direita    
+    imageData2 = ctx.getImageData(w/2, 0, w, h); // resultado a direita    
 
     // Percorrendo todos os pixels da imagem (cada x,y)
     for (y = 0; y < h; y++) {
         for (x = 0; x < w/2; x++) {
 		
-		pos = (x + (y * w)) * 4; 
+	pos = (x + (y * w)) * 4; 
 		
         r = imageData1.data[pos]; // imageData1 é a imagem esquerda
         g = imageData1.data[pos+1];
         b = imageData1.data[pos+2];
 
-		gray =  (r + g +  b)/3; // convertendo para cinza cada pixel
+	gray =  (r + g +  b)/3; // convertendo para cinza cada pixel
          
         imageData2.data[pos] = gray; // imageData2 é a imagem direita
         imageData2.data[pos+1] = gray;
-	    imageData2.data[pos+2] = gray;
+	imageData2.data[pos+2] = gray;
 		
-		// canal alpha obrigatório, tem que ser opaco = 255
+	// canal alpha obrigatório, tem que ser opaco = 255
     	imageData2.data[pos+3] = 255; //canal alpha, se  = 0 a imagem some			
         }
     } 
     ctx.putImageData(imageData1, 0, 0); // colocando a imagem esquerda na tela
-	ctx.putImageData(imageData2, w/2, 0); // imagem direita na tela
+    ctx.putImageData(imageData2, w/2, 0); // imagem direita na tela
 }
 
 img = new Image();
