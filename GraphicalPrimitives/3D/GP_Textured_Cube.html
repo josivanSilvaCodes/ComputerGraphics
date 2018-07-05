@@ -1,0 +1,110 @@
+<html>
+<head>
+<script src="http://processingjs.org/js/processing.min.js"></script>
+<script src="../processing.min.js"></script>
+</head>
+<body>
+<h3>Advanced Processing.js via JavaScript and HTML5 for Computer Graphics Classes </h3>
+<h2>Textured Cube Example by "Josivan Silva" - You can rotate it by mouse drag</h2>
+<em>NOTE: runs via a web server or requires local file (processing.min.js) access in the web browser settings.</em>
+<br><br>
+
+<center>
+<canvas id="canvas1" width="200" height="200"></canvas>
+<br>
+</center>
+
+<h4>
+Converted to the JavaScript language from the Processing code<br><br>
+Original souce code TexturedCube by Dave Bollinger.
+</h4>
+
+
+<script id="script1" type="text/javascript">
+
+// Attaching js code to the canvas by using a sketch object
+
+var sketch = new Processing.Sketch();
+// define 3D context
+sketch.use3DContext = true;
+// preload the images
+sketch.imageCache.add("wood.jpg");
+// attach function (also, can be specified as the single parameter 
+// in the Processing.Sketch object constructor)
+sketch.attachFunction = function(gl) {
+  var tex;
+  var rotx = Math.PI/4;
+  var roty = Math.PI/4;
+
+  gl.setup = function() {         // chamada ao iniciar o código (seria como o método main/start)
+    gl.size(640, 360, gl.OPENGL);
+    tex = gl.loadImage("wood.jpg");
+    gl.textureMode(gl.NORMALIZED);
+  };
+
+  gl.draw = function() {     // é um loop infinito
+    gl.background(0);
+    gl.noStroke();
+    gl.translate(gl.width/2.0, gl.height/2.0, -100);
+    gl.rotateX(rotx);
+    gl.rotateY(roty);
+    gl.scale(90,90,90);
+    texturedCube(tex);
+  }
+
+  function texturedCube(tex) {
+    gl.beginShape(gl.QUADS);
+    gl.texture(tex);
+    
+    // +Z "front" face
+    gl.vertex(-1, -1,  1, 0, 0);
+    gl.vertex( 1, -1,  1, 1, 0);
+    gl.vertex( 1,  1,  1, 1, 1);
+    gl.vertex(-1,  1,  1, 0, 1);
+
+    // -Z "back" face
+    gl.vertex( 1, -1, -1, 0, 0);
+    gl.vertex(-1, -1, -1, 1, 0);
+    gl.vertex(-1,  1, -1, 1, 1);
+    gl.vertex( 1,  1, -1, 0, 1);
+
+    // +Y "bottom" face
+    gl.vertex(-1,  1,  1, 0, 0);
+    gl.vertex( 1,  1,  1, 1, 0);
+    gl.vertex( 1,  1, -1, 1, 1);
+    gl.vertex(-1,  1, -1, 0, 1);
+
+    // -Y "top" face
+    gl.vertex(-1, -1, -1, 0, 0);
+    gl.vertex( 1, -1, -1, 1, 0);
+    gl.vertex( 1, -1,  1, 1, 1);
+    gl.vertex(-1, -1,  1, 0, 1);
+
+    // +X "right" face
+    gl.vertex( 1, -1,  1, 0, 0);
+    gl.vertex( 1, -1, -1, 1, 0);
+    gl.vertex( 1,  1, -1, 1, 1);
+    gl.vertex( 1,  1,  1, 0, 1);
+
+    // -X "left" face
+    gl.vertex(-1, -1, -1, 0, 0);
+    gl.vertex(-1, -1,  1, 1, 0);
+    gl.vertex(-1,  1,  1, 1, 1);
+    gl.vertex(-1,  1, -1, 0, 1);
+
+    gl.endShape();
+  }
+
+  // mouse event
+  gl.mouseDragged = function() {
+    var rate = 0.01;
+    rotx += (gl.pmouseY-gl.mouseY) * rate;
+    roty += (gl.mouseX-gl.pmouseX) * rate;
+  };
+};
+
+var canvas = document.getElementById("canvas1");
+// attaching the sketch to the canvas
+var p = new Processing(canvas, sketch);
+
+</script>
