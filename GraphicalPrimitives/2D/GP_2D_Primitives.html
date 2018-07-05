@@ -1,0 +1,122 @@
+<html>
+<head>
+<script src="http://processingjs.org/js/processing.min.js"></script>
+<script src="../processing.min.js"></script>
+</head>
+<body>
+<h3>Advanced Processing.js via JavaScript and HTML5 for Computer Graphics Classes </h3>
+<h2>2D Primitives Demonstration by "Josivan Silva" - Points, Lines, Triangles and Quads</h2>
+<em>NOTE: runs via a web server or requires local file (processing.min.js) access in the web browser settings.</em>
+<br><br>
+
+<center>
+<canvas id="canvas1" width="400" height="400"></canvas>
+<br>
+</center>
+
+<h4>
+Converted to the JavaScript language from the Processing code<br><br>
+
+</h4>
+
+<script id="script1" type="text/javascript">
+
+var sketch = new Processing.Sketch();
+
+sketch.use3DContext = true;
+sketch.attachFunction = function(gl) 
+{
+
+  gl.setup = function() 
+  {         // chamada ao iniciar o código (seria como o método main/start)
+    gl.size(400, 400, gl.OPENGL);
+	gl.camera(gl.width/2, gl.height/2, 100.0,		 0.0, 0.0, 0.0,			 0.0, 1.0, 0.0);
+	gl.ortho(-gl.width/2, gl.width/2, 	-gl.height/2, 	gl.height/2, 		-500, 500); 
+
+  };
+
+  gl.draw = function() 
+  {    	
+	gl.background(0,0,0);
+	gl.stroke(0, 0, 0);
+	
+	gl.beginShape(gl.QUADS);					
+		glColor3f(23, 255, 0.7);	// cor = amarelo
+		gl.vertex(200,  240,  0);	// ponto esquerdo superior
+		gl.vertex(250,  240,  0);	// ponto direito superior
+		gl.vertex(250,  280,  0);	// ponto direito inferior
+		gl.vertex(200,  280,  0);	// ponto esquerdo inferior
+    gl.endShape();
+	
+	gl.beginShape(gl.TRIANGLES);		
+		glColor3f(17, 0.0, 200.0);
+		gl.vertex(120,  240,  0);
+		gl.vertex(175,  160,  0);	
+		gl.vertex(250,  190,  0);		
+    gl.endShape();
+	
+	gl.pushMatrix(); // para não afetar o deslocamento das outras formas
+	gl.translate(95, -20, 0);	// deslocamento de 50 unidade no eixo X
+	// Lateral da casa desenhada no sentido horário
+	gl.beginShape(gl.QUADS);					
+		glColor3f(255, 255, 0.7);	// cor = amarelo
+		gl.vertex(200,  260,  0);		// ponto esquerdo superior
+		gl.vertex(250,  260,  0);		// ponto direito superior
+		gl.vertex(250,  290,  0);		// ponto direito inferior
+		gl.vertex(200,  290,  0);		// ponto esquerdo inferior
+    gl.endShape();
+	gl.popMatrix();
+		
+	gl.beginShape(gl.LINES);		
+		gl.stroke(255, 255, 255);		
+			gl.vertex(15,    150,  2);		// ponto esquerdo superior
+			gl.vertex(385,   20,  2);		// ponto direito superior				
+    gl.endShape();
+	
+	gl.beginShape(gl.LINES);		
+		gl.stroke(150, 15, 197);
+			gl.vertex(0,   286,  2);		// ponto esquerdo superior
+			gl.vertex(200, 308,  2);		// ponto direito superior	
+    gl.endShape();
+	
+	
+	gl.beginShape(gl.POINTS);	
+		gl.stroke(255, 	0,   0);
+		gl.strokeWeight(5);
+		gl.vertex(35,    50,  0);		// ponto esquerdo superior
+		gl.vertex(52,   40,  0);		// ponto direito superior
+	gl.endShape();
+	
+	gl.beginShape(gl.POINTS);	
+		gl.stroke(255, 	0,   0);
+		gl.strokeWeight(2);
+		gl.vertex(115,   60,  0);		// ponto direito inferior
+		gl.vertex(147,    40,  0);		// ponto esquerdo inferior
+    gl.endShape();
+	
+	
+
+  }
+
+  function glColor3f(r,g,b)
+  {  
+	gl.fill(r, g, b);    
+  }
+  
+  // mouse event
+  gl.mouseDragged = function() 
+  {
+    var rate = 0.001;
+    rotz += (5) * rate;
+  };
+  
+};
+
+var canvas = document.getElementById("canvas1");
+// attaching the sketch to the canvas
+var p = new Processing(canvas, sketch);
+
+</script>
+</center>
+</body>
+</html>
